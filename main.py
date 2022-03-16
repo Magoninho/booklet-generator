@@ -1,3 +1,4 @@
+from cmath import exp
 from turtle import back
 from pdf2image import convert_from_path
 from PIL import Image
@@ -47,7 +48,10 @@ front_pages = generate_front_pages(NUM_OF_PAGES)
 
 
 # Extracting images from pdf
+
 images = convert_from_path(str(input("File name: ")), first_page=0, last_page=NUM_OF_PAGES)
+
+
 
 try:
     os.makedirs("tmp/merged_pages/front_pages")
@@ -65,35 +69,42 @@ for img in images:
 page_counter = 0
 back_image_list = []
 front_image_list = []
-# generating back pages
-for b in range(len(back_pages)):
-	page_counter += 1
-	image1 = Image.open(f'tmp/{back_pages[b][0]}.jpg')
-	image2 = Image.open(f'tmp/{back_pages[b][1]}.jpg')
-	new_image = Image.new('RGB',(2*image1.size[0], image2.size[1]), (250,250,250))
-	new_image.paste(image1,(0,0))
-	new_image.paste(image2,(image1.size[0],0))
-	new_image.save(f"tmp/merged_pages/back_pages/{page_counter}_{back_pages[b][0]}_{back_pages[b][1]}.jpg","JPEG")
-	back_image_list.append(new_image)
 
-# generating pdf from back pages
-back_image_list[0].save(r'back_pages.pdf', save_all=True, append_images=back_image_list[1:])
+# Generating pages
+try:
+	# generating back pages
+	for b in range(len(back_pages)):
+		page_counter += 1
+		image1 = Image.open(f'tmp/{back_pages[b][0]}.jpg')
+		image2 = Image.open(f'tmp/{back_pages[b][1]}.jpg')
+		new_image = Image.new('RGB',(2*image1.size[0], image2.size[1]), (250,250,250))
+		new_image.paste(image1,(0,0))
+		new_image.paste(image2,(image1.size[0],0))
+		new_image.save(f"tmp/merged_pages/back_pages/{page_counter}_{back_pages[b][0]}_{back_pages[b][1]}.jpg","JPEG")
+		back_image_list.append(new_image)
 
-# generating front pages
-for f in range(len(front_pages)):
-	page_counter += 1
-	image1 = Image.open(f'tmp/{front_pages[f][0]}.jpg')
-	image2 = Image.open(f'tmp/{front_pages[f][1]}.jpg')
-	new_image = Image.new('RGB',(2*image1.size[0], image2.size[1]), (250,250,250))
-	new_image.paste(image1,(0,0))
-	new_image.paste(image2,(image1.size[0],0))
-	new_image.save(f"tmp/merged_pages/front_pages/{page_counter}_{front_pages[f][0]}_{front_pages[f][1]}.jpg","JPEG")
-	front_image_list.append(new_image)
+	# generating pdf from back pages
+	back_image_list[0].save(r'back_pages.pdf', save_all=True, append_images=back_image_list[1:])
+
+	# generating front pages
+	for f in range(len(front_pages)):
+		page_counter += 1
+		image1 = Image.open(f'tmp/{front_pages[f][0]}.jpg')
+		image2 = Image.open(f'tmp/{front_pages[f][1]}.jpg')
+		new_image = Image.new('RGB',(2*image1.size[0], image2.size[1]), (250,250,250))
+		new_image.paste(image1,(0,0))
+		new_image.paste(image2,(image1.size[0],0))
+		new_image.save(f"tmp/merged_pages/front_pages/{page_counter}_{front_pages[f][0]}_{front_pages[f][1]}.jpg","JPEG")
+		front_image_list.append(new_image)
 
 
-# generating pdf from front pages
+	# generating pdf from front pages
 
-front_image_list[0].save(r'front_pages.pdf', save_all=True, append_images=front_image_list[1:])
-
+	front_image_list[0].save(r'front_pages.pdf', save_all=True, append_images=front_image_list[1:])
+except FileNotFoundError:
+	print('Error: Could not generate')
+	print('Perhaps you entered a wrong number of pages...')
+	shutil.rmtree("tmp")
+	exit()
 
 shutil.rmtree("tmp")
