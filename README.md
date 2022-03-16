@@ -13,3 +13,6 @@ It will ask for a file name and how many pages your book has
 
 ### Attention!
 The number of pages must be an EVEN NUMBER, otherwise the algorithm won't work.
+
+## Printing
+Print the back pages first and then use the printed papers to print front pages behind
