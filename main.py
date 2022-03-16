@@ -2,6 +2,8 @@ from turtle import back
 from pdf2image import convert_from_path
 from PIL import Image
 
+
+# This is the algorithm for generating back and front pages
 def generate_back_pages(total_pages):
 	result = []
 	interactions = total_pages // 2
@@ -32,19 +34,21 @@ def generate_front_pages(total_pages):
 	
 	return result
 
-
+# Asks for the number of pages, must be even, because the algorithm only works for even numbers
 NUM_OF_PAGES = int(input("How many pages does your book has? "))
 if (NUM_OF_PAGES % 2) != 0: 
 	print("Must be an Even number of pages!")
 	exit()
 
+# Generating back and front pages using the number of pages
 back_pages = generate_back_pages(NUM_OF_PAGES)
 front_pages = generate_front_pages(NUM_OF_PAGES)
 
 
-# extracting images from pdf
+# Extracting images from pdf
 images = convert_from_path(str(input("File name: ")))
 
+# Saving these images to use later for pdf generation
 counter = 0
 for img in images:
 	counter += 1
