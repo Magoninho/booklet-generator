@@ -41,6 +41,9 @@ NUM_OF_PAGES = int(input("How many pages does your book has? "))
 if (NUM_OF_PAGES % 2) != 0: 
 	print("Must be an Even number of pages!")
 	exit()
+elif NUM_OF_PAGES < 4:
+	print("Your book must have at least 4 pages!")
+	exit()
 
 # Generating back and front pages using the number of pages
 back_pages = generate_back_pages(NUM_OF_PAGES)
@@ -48,7 +51,7 @@ front_pages = generate_front_pages(NUM_OF_PAGES)
 
 
 # Extracting images from pdf
-
+print("Converting pages...")
 images = convert_from_path(str(input("File name: ")), first_page=0, last_page=NUM_OF_PAGES)
 
 
@@ -69,12 +72,15 @@ for img in images:
 page_counter = 0
 back_image_list = []
 front_image_list = []
+total_progress = len(back_pages) + len(front_pages)
+iter_progress = 100 // total_progress
 
 # Generating pages
 try:
 	# generating back pages
 	for b in range(len(back_pages)):
 		page_counter += 1
+		print(str(page_counter * iter_progress) + "%")
 		image1 = Image.open(f'tmp/{back_pages[b][0]}.jpg')
 		image2 = Image.open(f'tmp/{back_pages[b][1]}.jpg')
 		new_image = Image.new('RGB',(2*image1.size[0], image2.size[1]), (250,250,250))
@@ -89,6 +95,7 @@ try:
 	# generating front pages
 	for f in range(len(front_pages)):
 		page_counter += 1
+		print(str(page_counter * iter_progress) + "%")
 		image1 = Image.open(f'tmp/{front_pages[f][0]}.jpg')
 		image2 = Image.open(f'tmp/{front_pages[f][1]}.jpg')
 		new_image = Image.new('RGB',(2*image1.size[0], image2.size[1]), (250,250,250))
@@ -101,6 +108,7 @@ try:
 	# generating pdf from front pages
 
 	front_image_list[0].save(r'front_pages.pdf', save_all=True, append_images=front_image_list[1:])
+	print("Done.")
 except FileNotFoundError:
 	print('Error: Could not generate')
 	print('Perhaps you entered a wrong number of pages...')
