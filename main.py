@@ -5,6 +5,9 @@ from PIL import Image
 import os
 import shutil
 
+def is_divisible_by_4(number):
+	return (number % 4) == 0
+
 # This is the algorithm for generating back and front pages
 def generate_back_pages(total_pages):
 	result = []
@@ -38,11 +41,8 @@ def generate_front_pages(total_pages):
 
 # Asks for the number of pages, must be even, because the algorithm only works for even numbers
 NUM_OF_PAGES = int(input("How many pages does your book has? "))
-if (NUM_OF_PAGES % 2) != 0: 
-	print("Must be an Even number of pages!")
-	exit()
-elif (NUM_OF_PAGES / 2) % 2 != 0:
-	print("Unsuficient number of pages. You must add more 2 pages to the book.")
+if not is_divisible_by_4(NUM_OF_PAGES): 
+	print("The number of pages must be divisible by 4!")
 	exit()
 elif NUM_OF_PAGES < 4:
 	print("Your book must have at least 4 pages!")
