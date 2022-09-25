@@ -41,6 +41,9 @@ NUM_OF_PAGES = int(input("How many pages does your book has? "))
 if (NUM_OF_PAGES % 2) != 0: 
 	print("Must be an Even number of pages!")
 	exit()
+elif (NUM_OF_PAGES / 2) % 2 != 0:
+	print("Unsuficient number of pages. You must add more 2 pages to the book.")
+	exit()
 elif NUM_OF_PAGES < 4:
 	print("Your book must have at least 4 pages!")
 	exit()
